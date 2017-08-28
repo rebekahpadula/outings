@@ -1,11 +1,37 @@
 import React, { Component } from 'react';
 import './App.css';
 import { base } from './base';
+import { app, facebookProvider } from './base';
 
 import Suggestions from './Suggestions';
 import SuggestionBox from './SuggestionBox';
 import Header from './Header';
+import RegistrationForm from './RegistrationForm';
 import styled from 'styled-components';
+
+const Loading = styled.section`
+  text-align: center;
+`;
+const LoadingHeading = styled.h1``;
+const LoadingAnimation = styled.div`
+  height: 50px;
+  width: 50px;
+  border: 3px solid #333;
+  border-radius: 50%;
+  margin: auto;
+  border-right-color: #eee;
+  border-bottom-color: #eee;
+  animation: load 3s infinite linear;
+
+  @keyframes load {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
 
 const Outings = styled.div`
   text-align: center;
@@ -45,10 +71,14 @@ export default class App extends Component {
           downVotes: 0
         }
       ],
-      authenticated: false
+      authenticated: false,
+      loading: true
     }
     this.addSuggestion = this.addSuggestion.bind(this);
     this.updateVotes = this.updateVotes.bind(this);
+    this.authWithFacebook = this.authWithFacebook.bind(this);
+    this.authWithEmailPassword = this.authWithEmailPassword.bind(this);
+    this.logOut = this.logOut.bind(this);
   };
 
   addSuggestion(suggestion) {
@@ -85,7 +115,40 @@ export default class App extends Component {
     });
   }
 
+  authWithFacebook() {
+    console.log("Authed with FB");
+    app.auth().signInWithPopup(facebookProvider)
+      .then((result, error) => {
+        // What is toaster??
+        if(error) {
+          alert("Unable to sign in with Facebook.");
+        } else {
+          this.setState({ redirect: true });
+        }
+      }) 
+  }
+
+  authWithEmailPassword(event) {
+    event.preventDefault();
+    console.log("authed will email and password");
+  }
+
+  // is this actually logging you out? I don't think so...?
+  logOut() {
+    app.auth().signOut().then((user) => {
+      this.setState({ authenticated: false});
+    })
+  }
+
   componentWillMount() {
+    this.removeAuthListener = app.auth().onAuthStateChanged((user) => {
+      if(user) {
+        this.setState({ authenticated: true, loading: false });
+      } else {
+        this.setState({ authenticated: false, loading: false});
+      }
+    })
+    // keep state same as data in firebase
     this.suggestionsRef = base.syncState('suggestions', {
       context: this,
       state: 'suggestions'
@@ -93,18 +156,29 @@ export default class App extends Component {
   }
 
   componentWillUnmount() {
+    this.removeAuthListener();
     base.removeBinding(this.suggestionsRef);
   }
 
   render() {
-    return (
-      <Outings>
-        <OutingsHeading>Outings</OutingsHeading>
-        <Header authenticated={this.state.authenticated}/>
-        {/* passing the suggestions array and the updateVotes function to my Suggestions component */}
-        <Suggestions suggestions={this.state.suggestions} voteFunction={this.updateVotes}/>
-        <SuggestionBox submitFunction={this.addSuggestion}/>
-      </Outings>
-    );
-  }
+    if(this.state.loading === true) {
+      return (
+        <Loading>
+          <LoadingHeading>Loading...</LoadingHeading>
+          <LoadingAnimation></LoadingAnimation>
+        </Loading>
+      )
+    } else {
+        return (
+          <Outings>
+            <OutingsHeading>Outings</OutingsHeading>
+            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut}/>
+            <RegistrationForm/>
+            {/* passing the suggestions array and the updateVotes function to my Suggestions component */}
+            <Suggestions suggestions={this.state.suggestions} voteFunction={this.updateVotes}/>
+            <SuggestionBox submitFunction={this.addSuggestion}/>
+          </Outings>
+        );
+      }
+    }
 }
