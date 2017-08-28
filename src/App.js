@@ -4,6 +4,7 @@ import { base } from './base';
 
 import Suggestions from './Suggestions';
 import SuggestionBox from './SuggestionBox';
+import Header from './Header';
 import styled from 'styled-components';
 
 const Outings = styled.div`
@@ -43,7 +44,8 @@ export default class App extends Component {
           upVotes: 4,
           downVotes: 0
         }
-      ]
+      ],
+      authenticated: false
     }
     this.addSuggestion = this.addSuggestion.bind(this);
     this.updateVotes = this.updateVotes.bind(this);
@@ -98,6 +100,7 @@ export default class App extends Component {
     return (
       <Outings>
         <OutingsHeading>Outings</OutingsHeading>
+        <Header authenticated={this.state.authenticated}/>
         {/* passing the suggestions array and the updateVotes function to my Suggestions component */}
         <Suggestions suggestions={this.state.suggestions} voteFunction={this.updateVotes}/>
         <SuggestionBox submitFunction={this.addSuggestion}/>
