@@ -1,39 +1,51 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const SuggestionBox = styled.section``
+const SuggestionBoxHeading = styled.h1``;
+const Form = styled.section``;
+const Label = styled.label``;
+const Input = styled.input``;
+const SubmitButton = styled.button``;
+const FormSection = styled.div``;
+
 
 export default (props) => {
   return (
-    <section className="suggestion-box">
-      <h1>Please submit your suggestions here</h1>
-      <section className="form">
-          <div>
-              <label className="label" htmlFor="name">Name</label>
-              <input className="input" type="text" id="name"/>
-          </div>
-          <div>
-              <label className="label" htmlFor="place">Place</label>
-              <input className="input" type="text" id="place"/>
-          </div>
-          <div>
-              <label className="label" htmlFor="date">Date</label>
-              <input className="input" type="date" id="date"/>
-          </div>
-          <div>
-              <label className="label" htmlFor="activity">Activity</label>
-              <input className="input" type="text" id="activity"/>
-          </div>
-          <button className="button" onClick={
+    <SuggestionBox>
+      <SuggestionBoxHeading>Please submit your suggestions here</SuggestionBoxHeading>
+      <Form>
+          <FormSection>
+              <Label htmlFor="name">Name</Label>
+              <Input type="text" id="name"/>
+          </FormSection>
+          <FormSection>
+              <Label htmlFor="place">Place</Label>
+              <Input type="text" id="place"/>
+          </FormSection>
+          <FormSection>
+              <Label htmlFor="date">Date</Label>
+              <Input type="date" id="date"/>
+          </FormSection>
+          <FormSection>
+              <Label htmlFor="activity">Activity</Label>
+              <Input type="text" id="activity"/>
+          </FormSection>
+          <SubmitButton className="button" onClick={
             () => {
              const obj = {
                suggestor: document.getElementById('name').value,
                place: document.getElementById('place').value,
                time: document.getElementById('date').value,
-               activity: document.getElementById('activity').value 
+               activity: document.getElementById('activity').value,
+               upVotes: 0,
+               downVotes: 0
              };
              props.submitFunction(obj);
             }
           
-            }>Submit</button>
-      </section>
-    </section>
+            }>Submit</SubmitButton>
+      </Form>
+    </SuggestionBox>
   );
 }
