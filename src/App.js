@@ -72,13 +72,16 @@ export default class App extends Component {
         }
       ],
       authenticated: false,
-      loading: true
+      loading: true,
+      modalActive: false
     }
     this.addSuggestion = this.addSuggestion.bind(this);
     this.updateVotes = this.updateVotes.bind(this);
     this.authWithFacebook = this.authWithFacebook.bind(this);
     this.authWithEmailPassword = this.authWithEmailPassword.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   };
 
   addSuggestion(suggestion) {
@@ -136,8 +139,19 @@ export default class App extends Component {
   // is this actually logging you out? I don't think so...?
   logOut() {
     app.auth().signOut().then((user) => {
-      this.setState({ authenticated: false});
+      this.setState({ authenticated: false });
     })
+  }
+
+  openModal() {
+    console.log("open modal");
+    this.setState({ modalActive: true });
+    // changes state of modal active to true. pass this one to header 
+  }
+
+  closeModal() {
+    this.setState({ modalActive: false });
+    // changes state of modal active to false! pass this one to the dialog!
   }
 
   componentWillMount() {
@@ -172,15 +186,16 @@ export default class App extends Component {
         return (
           <Outings>
             <OutingsHeading>Outings</OutingsHeading>  
-            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut}/>    
+            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut} openModal={this.openModal}/>
+            <RegistrationForm authWithFacebook={this.authWithFacebook} modalActive={this.state.modalActive}/>
           </Outings>
         );
       } else {
         return (
           <Outings>
             <OutingsHeading>Outings</OutingsHeading>
-            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut}/>
-            <RegistrationForm/>
+            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut} openModal={this.openModal}/>
+            {/* <RegistrationForm/> */}
             {/* passing the suggestions array and the updateVotes function to my Suggestions component */}
             <Suggestions suggestions={this.state.suggestions} voteFunction={this.updateVotes} />
             <SuggestionBox submitFunction={this.addSuggestion}/>

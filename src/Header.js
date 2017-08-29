@@ -8,7 +8,6 @@ const BrandingHeading = styled.h1``;
 const Authentication = styled.section``;
 const AuthenticationHeading = styled.h1``;
 const RegisterButton = styled.button``;
-const LoginButton = styled.button``;
 const LogOutButton = styled.button``;
 
 
@@ -23,8 +22,7 @@ export default (props) => {
                 </Branding>
                 <Authentication>
                     <AuthenticationHeading>Sr only register or log in heading</AuthenticationHeading>
-                    <RegisterButton onClick={(event) => { props.authWithEmailPassword(event) }}><a className="link" href="/login">Register/Log In</a></RegisterButton>
-                    <LoginButton onClick={() => { props.authWithFacebook() }}>Log In with Facebook</LoginButton>
+                    <RegisterButton onClick={props.openModal}><a href="/login">Register/Log In</a></RegisterButton>
                 </Authentication>
             </Header>
         )
