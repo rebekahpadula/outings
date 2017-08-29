@@ -168,14 +168,21 @@ export default class App extends Component {
           <LoadingAnimation></LoadingAnimation>
         </Loading>
       )
-    } else {
+    } else if(this.state.authenticated === false) {
+        return (
+          <Outings>
+            <OutingsHeading>Outings</OutingsHeading>  
+            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut}/>    
+          </Outings>
+        );
+      } else {
         return (
           <Outings>
             <OutingsHeading>Outings</OutingsHeading>
             <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut}/>
             <RegistrationForm/>
             {/* passing the suggestions array and the updateVotes function to my Suggestions component */}
-            <Suggestions suggestions={this.state.suggestions} voteFunction={this.updateVotes}/>
+            <Suggestions suggestions={this.state.suggestions} voteFunction={this.updateVotes} />
             <SuggestionBox submitFunction={this.addSuggestion}/>
           </Outings>
         );
