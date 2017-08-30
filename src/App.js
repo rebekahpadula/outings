@@ -35,6 +35,7 @@ const LoadingAnimation = styled.div`
 
 const Outings = styled.div`
   text-align: center;
+
 `;
 const OutingsHeading = styled.h1``;
 
@@ -73,7 +74,7 @@ export default class App extends Component {
       ],
       authenticated: false,
       loading: true,
-      modalActive: false
+      modalActive: true
     }
     this.addSuggestion = this.addSuggestion.bind(this);
     this.updateVotes = this.updateVotes.bind(this);
@@ -83,10 +84,12 @@ export default class App extends Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   };
-
+  
   addSuggestion(suggestion) {
     // gives the new "suggestion" a unique id
     suggestion.id = this.state.suggestions.length + 1;
+    // my attempt at updating the entire state
+    // this.setState(prevState => Object.assign({}, prevState, [...this.state.suggestions, suggestion]));
     this.setState((prevState, props) => {
       return {
         // returns a new array with the old suggestions and the new one
@@ -94,7 +97,7 @@ export default class App extends Component {
       }
     });
   }
-// passing id of the object and type which is the string you pass in your onClick function for the thumbs
+  // passing id of the object and type which is the string you pass in your onClick function for the thumbs
   updateVotes(id, type) {
     console.log(id, type);
     // setState always sends the previous state to the first param in the function you provide
@@ -117,36 +120,34 @@ export default class App extends Component {
       };
     });
   }
-
+  
   authWithFacebook() {
-    console.log("Authed with FB");
     app.auth().signInWithPopup(facebookProvider)
-      .then((result, error) => {
-        // What is toaster??
-        if(error) {
-          alert("Unable to sign in with Facebook.");
-        } else {
-          this.setState({ redirect: true });
-        }
-      }) 
+    .then((result, error) => {
+      if(error) {
+        alert("Unable to sign in with Facebook.");
+      } else {
+        // changes modalActive to false so that when you log out, the modal is not active
+        this.setState(prevState => Object.assign({}, prevState, {redirect: true, modalActive: false}));
+      }
+    }) 
   }
-
+  
   authWithEmailPassword(event) {
     event.preventDefault();
-    console.log("authed will email and password");
+    console.log("authed with email and password");
   }
-
+  
   // is this actually logging you out? I don't think so...?
   logOut() {
     app.auth().signOut().then((user) => {
-      this.setState({ authenticated: false });
+      this.setState(prevState => Object.assign({}, prevState, {authenticated: false}));
     })
   }
-
+  
   openModal() {
-    console.log("open modal");
-    this.setState({ modalActive: true });
-    // changes state of modal active to true. pass this one to header 
+    // setState is a function that takes the previous state as its arg, then you use Object.assign to copy that prevState and any new state (in this case modalActive) to the new state object
+    this.setState(prevState => Object.assign({}, prevState, {modalActive: true}));
   }
 
   closeModal() {
@@ -157,9 +158,9 @@ export default class App extends Component {
   componentWillMount() {
     this.removeAuthListener = app.auth().onAuthStateChanged((user) => {
       if(user) {
-        this.setState({ authenticated: true, loading: false });
+        this.setState(prevState => Object.assign({}, prevState, {authenticated: true, loading: false}));
       } else {
-        this.setState({ authenticated: false, loading: false});
+        this.setState(prevState => Object.assign({}, prevState, {authenticated: false, loading: false}));
       }
     })
     // keep state same as data in firebase
@@ -186,7 +187,7 @@ export default class App extends Component {
         return (
           <Outings>
             <OutingsHeading>Outings</OutingsHeading>  
-            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut} openModal={this.openModal}/>
+            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut} modalActive={this.state.modalActive} openModal={this.openModal}/>
             <RegistrationForm authWithFacebook={this.authWithFacebook} modalActive={this.state.modalActive}/>
           </Outings>
         );
@@ -194,7 +195,7 @@ export default class App extends Component {
         return (
           <Outings>
             <OutingsHeading>Outings</OutingsHeading>
-            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut} openModal={this.openModal}/>
+            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut}/>
             {/* <RegistrationForm/> */}
             {/* passing the suggestions array and the updateVotes function to my Suggestions component */}
             <Suggestions suggestions={this.state.suggestions} voteFunction={this.updateVotes} />
