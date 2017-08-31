@@ -5,6 +5,10 @@ import Suggestion from './Suggestion';
 
 const Suggestions = styled.section`
     margin-top: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    // align-items: space-around;
 `;
 const SuggestionsHeading = styled.h1`
     position: absolute;

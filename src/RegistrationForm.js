@@ -29,7 +29,7 @@ const Form = styled.section`
     top: ${props => props.modalActive ? '12vh' : '100vh'};
     z-index: 11;
 
-    @media screen and (min-width: 900px) {
+    @media screen and (min-width: 500px) {
         max-width: 450px;
     }
 `;

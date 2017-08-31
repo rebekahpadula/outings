@@ -3,7 +3,11 @@ import styled from 'styled-components';
 
 
 const Suggestion = styled.section`
-  background-color: aliceblue;
+  border: 1px solid pink;
+  background-color: #fafafa;
+  flex-basis: 100%;
+  padding: 20px;
+  margin-bottom: 40px;
 `;
 
 const Votes = styled.div``;

@@ -156,7 +156,8 @@ export default class App extends Component {
           return app.auth().createUserWithEmailAndPassword(email, password)
         } else if(providers.indexOf("password") === -1) {
           // they used facebook
-          // clear inputs using this.RegistrationForm.reset(), or setting the input values to '' ?
+          emailInput.value = '';
+          passwordInput.value = '';
           alert("You already have an account using Facebook.");
         } else {
           // sign user in
@@ -165,7 +166,8 @@ export default class App extends Component {
       })
       .then((user) => {
         if(user && user.email) {
-          // clear inputs using this.RegistrationForm.reset(), or setting the input values to '' ? 
+          emailInput.value = '';
+          passwordInput.value = '';
           this.setState(prevState => Object.assign({}, prevState, {redirect: true, modalActive: false}))
         }
       })
