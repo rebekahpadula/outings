@@ -34,10 +34,19 @@ const LoadingAnimation = styled.div`
 `;
 
 const Outings = styled.div`
-  text-align: center;
+  padding: 40px;
+  background-color: #8ec2c1;
 
+  @media screen and (min-width: 900px) {
+    padding: 40px 80px;
+  }
 `;
-const OutingsHeading = styled.h1``;
+
+const Content = styled.div`
+  color: #fff;
+`;
+
+const ContentMessage = styled.p``;
 
 export default class App extends Component {
   constructor(props) {
@@ -74,7 +83,7 @@ export default class App extends Component {
       ],
       authenticated: false,
       loading: true,
-      modalActive: true
+      modalActive: false
     }
     this.addSuggestion = this.addSuggestion.bind(this);
     this.updateVotes = this.updateVotes.bind(this);
@@ -135,10 +144,36 @@ export default class App extends Component {
   
   authWithEmailPassword(event) {
     event.preventDefault();
-    console.log("authed with email and password");
+    const emailInput = document.querySelector('.emailInput');
+    const passwordInput = document.querySelector('.passwordInput');
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    app.auth().fetchProvidersForEmail(email)
+      .then((providers) => {
+        if(providers.length === 0) {
+          // create user
+          return app.auth().createUserWithEmailAndPassword(email, password)
+        } else if(providers.indexOf("password") === -1) {
+          // they used facebook
+          // clear inputs using this.RegistrationForm.reset(), or setting the input values to '' ?
+          alert("You already have an account using Facebook.");
+        } else {
+          // sign user in
+          return app.auth().signInWithEmailAndPassword(email, password);
+        }
+      })
+      .then((user) => {
+        if(user && user.email) {
+          // clear inputs using this.RegistrationForm.reset(), or setting the input values to '' ? 
+          this.setState(prevState => Object.assign({}, prevState, {redirect: true, modalActive: false}))
+        }
+      })
+      .catch((error) => {
+        alert(error, error.message);
+      })
   }
   
-  // is this actually logging you out? I don't think so...?
   logOut() {
     app.auth().signOut().then((user) => {
       this.setState(prevState => Object.assign({}, prevState, {authenticated: false}));
@@ -151,7 +186,6 @@ export default class App extends Component {
   }
 
   closeModal() {
-    console.log("close modal");
     this.setState(prevState => Object.assign({}, prevState, {modalActive: false}));
   }
 
@@ -186,18 +220,17 @@ export default class App extends Component {
     } else if(this.state.authenticated === false) {
         return (
           <Outings>
-            <OutingsHeading>Outings</OutingsHeading>  
-            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut} modalActive={this.state.modalActive} openModal={this.openModal}/>
-            <RegistrationForm authWithFacebook={this.authWithFacebook} modalActive={this.state.modalActive} closeModal={this.closeModal}/>
+            <Header authenticated={this.state.authenticated} logOut={this.logOut} modalActive={this.state.modalActive} openModal={this.openModal}/>
+            <Content>
+              <ContentMessage>You can't vote on anything until you log in!</ContentMessage>
+            </Content>
+            <RegistrationForm authWithFacebook={this.authWithFacebook} modalActive={this.state.modalActive} closeModal={this.closeModal} authWithEmailPassword={this.authWithEmailPassword}/>
           </Outings>
         );
       } else {
         return (
           <Outings>
-            <OutingsHeading>Outings</OutingsHeading>
-            <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut}/>
-            {/* <RegistrationForm/> */}
-            {/* passing the suggestions array and the updateVotes function to my Suggestions component */}
+            <Header authenticated={this.state.authenticated} logOut={this.logOut}/>
             <Suggestions suggestions={this.state.suggestions} voteFunction={this.updateVotes} />
             <SuggestionBox submitFunction={this.addSuggestion}/>
           </Outings>

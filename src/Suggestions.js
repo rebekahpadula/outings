@@ -3,8 +3,17 @@ import styled from 'styled-components';
 
 import Suggestion from './Suggestion';
 
-const Suggestions = styled.section``;
-const SuggestionsHeading = styled.h1``;
+const Suggestions = styled.section`
+    margin-top: 60px;
+`;
+const SuggestionsHeading = styled.h1`
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+`;
 
 export default (props) => {
     return (

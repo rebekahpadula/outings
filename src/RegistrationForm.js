@@ -20,11 +20,12 @@ const Form = styled.section`
     box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);
     left: 0;
     margin: 0 auto;
-    max-height: 630px;
+    max-height: 680px;
     max-width: 350px;
     padding: 40px;
     position: absolute;
     right: 0;
+    text-align: center;
     top: ${props => props.modalActive ? '12vh' : '100vh'};
     z-index: 11;
 
@@ -33,7 +34,9 @@ const Form = styled.section`
     }
 `;
 
-const FormHeading = styled.h1``;
+const FormHeading = styled.h1`
+    font-family: Pacifico;
+`;
 const FormSection = styled.div`
     margin: 20px auto;
 `;
@@ -48,7 +51,6 @@ const FormInput = styled.input`
     padding: 12px 20px;
     width: 270px;
     width: 100%;
-    text-align: left;
     border-radius: 3px;
     border: 1px solid #eee;
     font-size: 18px;
@@ -99,9 +101,10 @@ const FormInfo = styled.div`
     background-color: #eee;
     border-radius: 3px;
     padding: 20px;
+    text-align: left;
 `;
 const FormInfoHeading = styled.h2`
-    font-size: 
+    text-align: left;
 `;
 const FormParagraph = styled.p``;
 
@@ -123,13 +126,13 @@ export default (props) => {
             </FormSection>
             <FormSection>
                 <FormLabel htmlFor="emailAddress">Email</FormLabel>
-                <FormInput type="email" id="emailAddress" ref={(input) => { this.emailInput = input }}/>
+                <FormInput className="emailInput" type="email" id="emailAddress" ref={(input) => { this.emailInput = input }}/>
             </FormSection>
             <FormSection>
                 <FormLabel htmlFor="password">Password</FormLabel>
-                <FormInput type="password" id="password" ref={(input) => { this.passwordInput = input }}/>
+                <FormInput className="passwordInput" type="password" id="password" ref={(input) => { this.passwordInput = input }}/>
             </FormSection>
-            <SubmitButton onSubmit={(event) => { props.authWithEmailPassword(event) }} ref={(form) => { this.loginForm = form }}>Log In</SubmitButton>
+            <SubmitButton onClick={props.authWithEmailPassword} onSubmit={(event) => { props.authWithEmailPassword(event) }} ref={(form) => { this.loginForm = form }}>Log In</SubmitButton>
         </Form>
     </FormModal>
   );
