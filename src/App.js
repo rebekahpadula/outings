@@ -151,8 +151,8 @@ export default class App extends Component {
   }
 
   closeModal() {
-    this.setState({ modalActive: false });
-    // changes state of modal active to false! pass this one to the dialog!
+    console.log("close modal");
+    this.setState(prevState => Object.assign({}, prevState, {modalActive: false}));
   }
 
   componentWillMount() {
@@ -188,7 +188,7 @@ export default class App extends Component {
           <Outings>
             <OutingsHeading>Outings</OutingsHeading>  
             <Header authenticated={this.state.authenticated} authWithFacebook={this.authWithFacebook} authWithEmailPassword={this.authWithEmailPassword} logOut={this.logOut} modalActive={this.state.modalActive} openModal={this.openModal}/>
-            <RegistrationForm authWithFacebook={this.authWithFacebook} modalActive={this.state.modalActive}/>
+            <RegistrationForm authWithFacebook={this.authWithFacebook} modalActive={this.state.modalActive} closeModal={this.closeModal}/>
           </Outings>
         );
       } else {
