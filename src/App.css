@@ -2,10 +2,15 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100%;
+}
+
 body {
     position: relative;
     font-size: 62.5%;
     font-family: Open Sans;
+    height: 100%;
 }
 
 p {

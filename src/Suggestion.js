@@ -3,19 +3,35 @@ import styled from 'styled-components';
 
 
 const Suggestion = styled.section`
-  border: 1px solid pink;
   background-color: #fafafa;
+  border-radius: 5px;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);  
   flex-basis: 100%;
-  padding: 20px;
   margin-bottom: 40px;
+  max-width: 400px;
+  padding: 20px;
+  // transition: transform 0.05s;
+
+  @media screen and (min-width: 700px) {
+    flex-basis: calc(50% - 40px);
+
+    :not(:last-child) {
+      margin-right: 40px;
+    }
+  }
+
+  :hover {
+    transform: scale(1.01);
+    cursor: pointer;
+  }
 `;
 
 const Votes = styled.div``;
 
 const Thumb = styled.span`
   cursor: pointer;
-  margin: 10px;
   display: inline-block;
+  margin: 10px;
 `;
 
 const Suggestor = styled.p``;
@@ -30,11 +46,12 @@ const UpVotes = styled.span``;
 export default (props) => {
   return (
     <Suggestion className="suggestion">
+      <p><b>{props.suggestion.suggestor}</b> wants to <b>{props.suggestion.activity}</b> at <b>{props.suggestion.place}</b> on <b>{props.suggestion.time}</b></p>
       {/* accessing suggestions array */}
-      <Suggestor>{props.suggestion.suggestor}</Suggestor>
-      <Activity>{props.suggestion.activity}</Activity>
-      <Place>{props.suggestion.place}</Place>
-      <Time>{props.suggestion.time}</Time>
+      <Suggestor>Suggestor: {props.suggestion.suggestor}</Suggestor>
+      <Activity>Activity: {props.suggestion.activity}</Activity>
+      <Place>Place: {props.suggestion.place}</Place>
+      <Time>Date: {props.suggestion.time}</Time>
       <Votes className="votes">
         {/* again referencing our voteFunction since that's how we passed it in App.js */}
         {/* using anonymous function to call the voteFunction so we can pass e */}

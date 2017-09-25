@@ -65,8 +65,12 @@ const SubmitButton = styled.button`
     border-radius: 3px;
     width: 100%;
 
-    &::hover {
-        background-color: darken(#ff4447, 10%);
+    :hover {
+        background-color: #e53d3f;
+    }
+
+    :active {
+        background-color: #cc3638;
     }
 `;
 const FbButton = styled.button`
@@ -79,8 +83,12 @@ const FbButton = styled.button`
     border-radius: 3px;
     width: 100%;
 
-    &::hover {
-        background-color: darken(#4267b2, 10%);
+    :hover {
+        background-color: #3b5ca0;
+    }
+
+    :active {
+        background-color: #34528e;
     }
 `;
 
@@ -95,6 +103,14 @@ const CloseButton = styled.button`
     background-color: transparent;
     cursor: pointer;
     font-weight: 500;
+
+    :hover {
+        color: #e53d3f;
+    }
+
+    :active {
+        color: #cc3638;
+    }
 `;
 
 const FormInfo = styled.div`

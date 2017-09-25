@@ -2,16 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Header = styled.header`
+    align-items: center;
     display: flex;
     justify-content: center;
-    align-items: center;
 `;
 const HeaderHeading = styled.h1`
-    font-family: Pacifico;
+    color: #fff;
     flex-basis: 0;
     flex-grow: 1;
     flex-shrink: 1;
-    color: #fff;
+    font-family: Pacifico;
 `;
 const Authentication = styled.section`
     flex-basis: auto;
@@ -19,39 +19,48 @@ const Authentication = styled.section`
     flex-shrink: 1;
 `;
 const AuthenticationHeading = styled.h1`
-    position: absolute;
+    height: 1px;
     left: -10000px;
+    overflow: hidden;
+    position: absolute;
     top: auto;
     width: 1px;
-    height: 1px;
-    overflow: hidden;
 `;
 const RegisterButton = styled.button`
-    border: none;
     background-color: #ff4447;
+    border: none;
+    border-radius: 3px;
     color: #fafafa;
-    padding: 15px 20px;
     cursor: pointer;
     font-size: 18px;
-    border-radius: 3px;
+    padding: 15px 20px;
     width: 100%;
 
-    &::hover {
-        background-color: darken(#ff4447, 10%);
+    :hover {
+        background-color: #e53d3f;
+    }
+
+    :active {
+        background-color: #cc3638;
     }
 `;
 const LogOutButton = styled.button`
-    border: none;
     background-color: #ff4447;
+    // background-color: #444c5c;
+    border: none;
+    border-radius: 3px;
     color: #fafafa;
-    padding: 15px 20px;
     cursor: pointer;
     font-size: 18px;
-    border-radius: 3px;
+    padding: 15px 20px;
     width: 100%;
 
-    &::hover {
-        background-color: darken(#ff4447, 10%);
+    :hover {
+        background-color: #e53d3f;
+    }
+
+    :active {
+        background-color: #cc3638;
     }
 `;
 
